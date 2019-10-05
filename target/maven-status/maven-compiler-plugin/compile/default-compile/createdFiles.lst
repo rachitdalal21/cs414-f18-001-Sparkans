@@ -1,4 +1,7 @@
-com/sparkans/bandi/server/Greeting.class
-com/sparkans/bandi/server/HTTP.class
-com/sparkans/bandi/server/MyServer.class
-com/sparkans/bandi/server/MicroServer.class
+com/sparkans/banqi/server/MyServer.class
+com/sparkans/banqi/server/HTTP.class
+com/sparkans/banqi/user/UserRegistration.class
+com/sparkans/banqi/server/Greeting.class
+com/sparkans/banqi/server/MicroServer.class
+com/sparkans/banqi/user/UserSignIn.class
+com/sparkans/banqi/user/UserBean.class

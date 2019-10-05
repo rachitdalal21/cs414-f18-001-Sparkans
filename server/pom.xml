@@ -9,11 +9,11 @@
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.sparkans.bandi</groupId>
+    <groupId>com.sparkans.banqi</groupId>
     <artifactId>server</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
-    <name>t06</name>
+    <name>sparkans</name>
     <url>https://github.com/rachitdalal/cs414-f18-001-Sparkans</url>
 
     <build>
@@ -33,7 +33,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.sparkans.bandi.server.MyServer</mainClass>
+                            <mainClass>com.sparkans.banqi.server.MyServer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
