@@ -1,4 +1,4 @@
-package com.sparkans.bandi.server;
+package com.sparkans.banqi.server;
 
 /** The main class for the application.
  *

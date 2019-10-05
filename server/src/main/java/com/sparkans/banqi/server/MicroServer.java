@@ -1,4 +1,4 @@
-package com.sparkans.bandi.server;
+package com.sparkans.banqi.server;
 
 import spark.Request;
 import spark.Response;
