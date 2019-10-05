@@ -1,0 +1,25 @@
+<p>register-user works!</p>
+<div>
+  <div class="example-container">
+    <mat-form-field>
+      <input matInput placeholder="Enter your email" [formControl]="email" required>
+      <mat-error *ngIf="email.invalid">{{getErrorMessage('')}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="example-container">
+    <mat-form-field>
+      <input matInput placeholder="Enter your nickname" [formControl]="nickName" required>
+      <mat-error *ngIf="nickName.invalid">{{getErrorMessage('nickName')}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="example-container">
+    <mat-form-field>
+      <input matInput type="password" placeholder="Enter your password" [formControl]="password" required>
+      <mat-error *ngIf="password.invalid">{{getErrorMessage('password')}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="banqi-button-row">
+    <button mat-raised-button color="primary">Register User</button>
+  </div>
+
+</div>
