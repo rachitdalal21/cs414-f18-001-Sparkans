@@ -91,21 +91,21 @@ public class MicroServer {
  private String register(Request request, Response response) {
 	 
 	 response.type("application/json");
-	 return "{registered: true}";
+	 return "{registered: \"true\"}";
 	 
  }
  
  private String signin(Request request, Response response) {
 	 
 	 response.type("application/json");
-	 return "{signedin: true}";
+	 return "{signedin: \"true\"}";
 	 
  }
  
  private String invite(Request request, Response response) {
 	 
 	 response.type("application/json");
-	 return "{invite: true}";
+	 return "{invite: \"true\"}";
 	 
  }
  
