@@ -42,8 +42,10 @@ public class MicroServer {
     get("/echo", this::echo);
     get("/hello/:name", this::hello);
     //for client sending data, HTTP POST is used instead of a GET
-
-
+    post("/register", this::register);
+    post("/signin", this::signin);
+    post("/invite", this::invite);
+    
     System.out.println("\n\nServer running on port: " + this.port + "\n\n");
   }
 
@@ -86,6 +88,26 @@ public class MicroServer {
     return Greeting.html(request.params(":name"));
   }
 
+ private String register(Request request, Response response) {
+	 
+	 response.type("application/json");
+	 return "{registered: true}";
+	 
+ }
+ 
+ private String signin(Request request, Response response) {
+	 
+	 response.type("application/json");
+	 return "{signedin: true}";
+	 
+ }
+ 
+ private String invite(Request request, Response response) {
+	 
+	 response.type("application/json");
+	 return "{invite: true}";
+	 
+ }
  
   private String team(Request request, Response response) {
 
