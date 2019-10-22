@@ -1,80 +1,80 @@
 package com.sparkans.banqi.user;
 
-
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class UserBean{
 
-    private String email;
-    private String nickname;
-    private String password;
-    private boolean active;
-    private Date createDate;
-    private boolean loggedIn;
-    private Date lastLoggedInTS;
+	protected String email;
+	protected String nickname;
+	protected String password;
+	protected Character isActive_flag;
+	protected Timestamp createdTS;
+	protected Character isLoggedIn_flag; 
+	protected Timestamp lastLoggedInTS;
 
-    public UserBean() {
-    }
+	public UserBean() {
+	}
 
-    public UserBean(String email, String nickname, String password){
-        this.email = email;
-        this.nickname = nickname;
-        this.password = password;
-    }
+	//getter and setter methods for Email.
+	public String getEmail(){
+		return email;
+	}
 
-    public String getEmail(){
-        return email;
-    }
+	public void setEmail(String email){
+		this.email = email;
+	}
 
-    public String getNickname(){
-        return nickname;
-    }
+	//getter and setter methods for Nickname.
+	public String getNickname(){
+		return nickname;
+	}
 
-    public String getPassword(){
-        return password;
-    }
+	public void setNickname(String nickname){
+		this.nickname = nickname;
+	}
 
-    public boolean isActive(){
-        return active;
-    }
+	//getter and setter methods for Password.
+	public String getPassword(){
+		return password;
+	}
 
-    public Date getCreateDate(){
-        return createDate;
-    }
+	public void setPassword(String password){
+		this.password = password;
+	}
 
-    public boolean isLoggedIn(){
-        return isLoggedIn();
-    }
+	//getter and setter methods for isActive_flag.
+	public Character isActive(){
+		return isActive_flag;
+	}
 
-    public  Date getLastLoggedInTS(){
-        return lastLoggedInTS;
-    }
+	public void setActive(Character isActive_flag){
+		this.isActive_flag = isActive_flag;
+	}
 
-    public void setEmail(String email){
-        this.email = email;
-    }
+	//getter and setter methods for CreatedDate.
+	public Timestamp getCreateDate(){
+		return createdTS;
+	}
 
-    public void setNickname(String nickname){
-        this.nickname = nickname;
-    }
+	public void setCreateDate(Timestamp createDate) {
+		this.createdTS = createDate;
+	}
 
-    public void setPassword(String password){
-        this.password = password;
-    }
+	//getter and setter methods for isLoggedIn_flag.
+	public Character isLoggedIn(){
+		return isLoggedIn_flag;
+	}
 
-    public void setActive(boolean active){
-        this.active = active;
-    }
+	public void setLoggedIn(Character isLoggedIn_flag) {
+		this.isLoggedIn_flag = isLoggedIn_flag;
+	}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	//getter and setter methods for lastLoggedInTS.
+	public  Timestamp getLastLoggedInTS(){
+		return lastLoggedInTS;
+	}
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
-
-    public void setLastLoggedInTS(Date lastLoggedInTS) {
-        this.lastLoggedInTS = lastLoggedInTS;
-    }
+	public void setLastLoggedInTS(Timestamp lastLoggedInTS) {
+		this.lastLoggedInTS = lastLoggedInTS;
+	}
 }
