@@ -5,8 +5,8 @@ import java.sql.*;
 public class MySqlCon {
 
 	private static String url = "jdbc:mysql://faure.cs.colostate.edu:3306/sparkans?useLegacyDatetimeCode=false&serverTimezone=UTC";
-	private static String username = "swathy";
-	private static String password = "832628056";
+	private static String username = "username";
+	private static String password = "password";
 	private static Connection conn;
 
 	public static Connection getConnection(){  
