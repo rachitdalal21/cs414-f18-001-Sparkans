@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable, Subscription} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register-user',
@@ -15,11 +16,13 @@ export class RegisterUserComponent implements OnInit {
   password : new FormControl('', [Validators.required]),
   nickName : new FormControl('', [Validators.required])
   });
+  userName;
 
   /*
   * Added HttpClient service to make rest calls
   * */
-  constructor( private http: HttpClient) { }
+  constructor( private http: HttpClient,
+               private router: Router ) { }
 
   ngOnInit() {
 
@@ -53,7 +56,11 @@ export class RegisterUserComponent implements OnInit {
 
     return this.http.post<any>( "http://localhost:31406/register", userDetails, httpOptions)
       .subscribe(( results ) => {
-        debugger;
+        if( results.registered ){
+          /* TODO: emit subject from here to app component to display name on the header*/
+          // this.userName = userDetails['nickName'];
+         this.router.navigate(['/signin']);
+        }
       // this.result = results;
     }, (error) => {
         debugger;
