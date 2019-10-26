@@ -1,9 +1,13 @@
-server runs on localhost:31406
+# Building and Running the Server
 
-about GET localhost:31406/about
+## Building
+To build the server you must have Maven installed.
+"mvn package" will run tests and build the server-*.jar file
+run "mvn clean" followed by "mvn package" to be sure you have only the latest version of the server built.
 
-register user POST localhost:31406/register
+## Running
+To run the server use "java -jar server-*.jar" on the .jar file located in /server/target/
+If you're in a bash enviroment the run.sh script at the project root will build and run the server. 
 
-sign in user POST localhost:31406/signin
+The server runs on localhost:31406
 
-invite user POST localhost:31406/invite
