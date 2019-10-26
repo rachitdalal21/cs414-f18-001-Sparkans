@@ -1,11 +1,11 @@
 package com.sparkans.banqi.server;
 
-import spark.Filter;
+import com.sparkans.banqi.user.UserBean;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 
-import java.util.HashMap;
+import com.google.gson.*;
 
 import static spark.Spark.get;
 import static spark.Spark.port;
@@ -41,6 +41,7 @@ public class MicroServer {
 
     // register all micro-services and the function that services them.
     // start with HTTP GET
+     //apply CorsFilter
      CorsFilter.apply();
     get("/about", this::about);
     get("/echo", this::echo);
@@ -109,6 +110,10 @@ public class MicroServer {
 	 
 	 response.type("application/json");
      response.header("Access-Control-Allow-Headers", "*");
+     //@TODO add DB connection
+     Gson gson = new Gson();
+     UserBean user = gson.fromJson(request.body(),UserBean.class);
+     //user contains the user we want to register
 	 return "{\"registered\": \"true\"}";
 	 
  }
@@ -116,14 +121,24 @@ public class MicroServer {
  private String signin(Request request, Response response) {
 	 
 	 response.type("application/json");
-	 return "{signedin: \"true\"}";
+     response.header("Access-Control-Allow-Headers", "*");
+     //@TODO add DB connection
+     Gson gson = new Gson();
+     UserBean user = gson.fromJson(request.body(),UserBean.class);
+     //user contains the user to sign in
+	 return "{\"signedin\": \"true\"}";
 	 
  }
  
  private String invite(Request request, Response response) {
 	 
 	 response.type("application/json");
-	 return "{invite: \"true\"}";
+     response.header("Access-Control-Allow-Headers", "*");
+     //@TODO add DB connection
+     Gson gson = new Gson();
+     UserBean user = gson.fromJson(request.body(),UserBean.class);
+     // user contains the user to invite
+	 return "{\"invite\": \"true\"}";
 	 
  }
  
