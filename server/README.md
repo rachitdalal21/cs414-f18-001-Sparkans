@@ -10,7 +10,7 @@ run "mvn clean" followed by "mvn package" to be sure you have only the latest ve
 ## Running
 To run the server use "java -jar server-*.jar" on the .jar file located in /server/target/
 #
-If you're in a bash enviroment the run.sh script at the project root will build and run the server. 
+If you're in a bash enviroment the "run" script at the project root will build and run the server. 
 #
 The server runs on localhost:31406
 
