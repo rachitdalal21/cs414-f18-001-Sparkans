@@ -1,13 +1,16 @@
 package com.sparkans.banqi.server;
 
+import spark.Filter;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 
+import java.util.HashMap;
+
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
-
+import static spark.Spark.options;
 
 /** A simple micro-server for the web.  Just what we need, nothing more.
  *
@@ -38,6 +41,7 @@ public class MicroServer {
 
     // register all micro-services and the function that services them.
     // start with HTTP GET
+     CorsFilter.apply();
     get("/about", this::about);
     get("/echo", this::echo);
     get("/hello/:name", this::hello);
@@ -45,6 +49,19 @@ public class MicroServer {
     post("/register", this::register);
     post("/signin", this::signin);
     post("/invite", this::invite);
+
+     options("/*", (request,response)->{
+         String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+         if (accessControlRequestHeaders != null) {
+             response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+         }
+         String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+         if(accessControlRequestMethod != null){
+             response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+         }
+
+         return "OK";
+     });
     
     System.out.println("\n\nServer running on port: " + this.port + "\n\n");
   }
@@ -91,7 +108,8 @@ public class MicroServer {
  private String register(Request request, Response response) {
 	 
 	 response.type("application/json");
-	 return "{registered: \"true\"}";
+     response.header("Access-Control-Allow-Headers", "*");
+	 return "{\"registered\": \"true\"}";
 	 
  }
  
@@ -115,4 +133,5 @@ public class MicroServer {
 
     return name;
   }
+
 }
