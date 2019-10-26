@@ -1,19 +1,20 @@
 <p>sign-in-component works!</p>
 <div>
+  <form [formGroup]="signInForm"  (ngSubmit)="signInUser(signInForm.value)">
   <div class="example-container">
     <mat-form-field>
-      <input matInput placeholder="Enter your email" [formControl]="email" required>
-      <mat-error *ngIf="email.invalid">{{getErrorMessage('')}}</mat-error>
+      <input matInput type="email" placeholder="Enter your email" formControlName="email" required>
+      <mat-error *ngIf="signInForm.controls['email'].invalid">{{getErrorMessage('')}}</mat-error>
     </mat-form-field>
   </div>
   <div class="example-container">
     <mat-form-field>
-      <input matInput type="password" placeholder="Enter your password" [formControl]="password" required>
-      <mat-error *ngIf="password.invalid">{{getErrorMessage('password')}}</mat-error>
+      <input matInput type="password" placeholder="Enter your password" formControlName="password" required>
+      <mat-error *ngIf="signInForm.controls['password'].invalid">{{getErrorMessage('password')}}</mat-error>
     </mat-form-field>
   </div>
   <div class="banqi-button-row">
-    <button mat-raised-button color="primary">Sign In</button>
+    <button mat-raised-button type="submit" [disabled]="!signInForm.valid" color="primary">Sign In</button>
   </div>
-
+  </form>
 </div>
