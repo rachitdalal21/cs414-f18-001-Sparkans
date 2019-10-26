@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class UserBean{
 
 	protected String email;
-	protected String nickname;
+	protected String nickName;
 	protected String password;
 	protected Character isActive_flag;
 	protected Timestamp createdTS;
@@ -26,11 +26,11 @@ public class UserBean{
 
 	//getter and setter methods for Nickname.
 	public String getNickname(){
-		return nickname;
+		return nickName;
 	}
 
-	public void setNickname(String nickname){
-		this.nickname = nickname;
+	public void setNickName(String nickname){
+		this.nickName = nickname;
 	}
 
 	//getter and setter methods for Password.

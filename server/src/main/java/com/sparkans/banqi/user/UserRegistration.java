@@ -66,7 +66,7 @@ public class UserRegistration {
 
 	public boolean createUser(UserBean userBean) throws SQLException {
 
-		if (validateEmail(userBean.getEmail()) && validateNickName(userBean.getNickname()) && validatePassword(userBean.getPassword())) 
+		if (validateEmail(userBean.getEmail()) && validateNickName(userBean.getNickname()) && validatePassword(userBean.getPassword()))
 		{
 			System.out.println("\nInserting records into table...");
 
@@ -81,7 +81,7 @@ public class UserRegistration {
 				int user_id = keyResultSet.getInt(1);
 			}
 
-			statement.setString(1, userBean.nickname);
+			statement.setString(1, userBean.nickName);
 			statement.setString(2, userBean.password);
 			statement.setString(3, userBean.email);
 			statement.setString(4, String.valueOf("Y"));
