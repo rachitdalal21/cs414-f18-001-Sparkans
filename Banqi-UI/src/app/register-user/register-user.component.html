@@ -1,25 +1,26 @@
 <p>register-user works!</p>
 <div>
-  <div class="example-container">
-    <mat-form-field>
-      <input matInput placeholder="Enter your email" [formControl]="email" required>
-      <mat-error *ngIf="email.invalid">{{getErrorMessage('')}}</mat-error>
-    </mat-form-field>
-  </div>
-  <div class="example-container">
-    <mat-form-field>
-      <input matInput placeholder="Enter your nickname" [formControl]="nickName" required>
-      <mat-error *ngIf="nickName.invalid">{{getErrorMessage('nickName')}}</mat-error>
-    </mat-form-field>
-  </div>
-  <div class="example-container">
-    <mat-form-field>
-      <input matInput type="password" placeholder="Enter your password" [formControl]="password" required>
-      <mat-error *ngIf="password.invalid">{{getErrorMessage('password')}}</mat-error>
-    </mat-form-field>
-  </div>
-  <div class="banqi-button-row">
-    <button mat-raised-button color="primary" (click)="registerUser()">Register User</button>
-  </div>
-
+  <form [formGroup]="registrationForm"  (ngSubmit)="registerUser(registrationForm.value)">
+    <div class="example-container">
+      <mat-form-field>
+        <input matInput type="email" placeholder="Enter your email" formControlName="email" required>
+        <mat-error *ngIf="registrationForm.controls['email'].invalid">{{getErrorMessage('')}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="example-container">
+      <mat-form-field>
+        <input matInput placeholder="Enter your nickname" formControlName="nickName" required>
+        <mat-error *ngIf="registrationForm.controls['nickName'].invalid">{{getErrorMessage('nickName')}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="example-container">
+      <mat-form-field>
+        <input matInput type="password" placeholder="Enter your password" formControlName="password" required>
+        <mat-error *ngIf="registrationForm.controls['password'].invalid">{{getErrorMessage('password')}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="banqi-button-row">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!registrationForm.valid">Register User</button>
+    </div>
+  </form>
 </div>
