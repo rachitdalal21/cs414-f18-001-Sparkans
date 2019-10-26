@@ -7,6 +7,8 @@ import spark.Spark;
 
 import com.google.gson.*;
 
+import java.util.ArrayList;
+
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
@@ -49,7 +51,8 @@ public class MicroServer {
     //for client sending data, HTTP POST is used instead of a GET
     post("/register", this::register);
     post("/signin", this::signin);
-    post("/invite", this::invite);
+    get("/invite", this::invite);
+    get("/sendInvite", this::sendInvite);
 
      options("/*", (request,response)->{
          String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
@@ -135,12 +138,25 @@ public class MicroServer {
 	 response.type("application/json");
      response.header("Access-Control-Allow-Headers", "*");
      //@TODO add DB connection
+     String user = request.queryParams("user");
+     //query DB for user
+     //store possible users in ArrayList
+     ArrayList<String> possibleUsers = new ArrayList<>();
      Gson gson = new Gson();
-     UserBean user = gson.fromJson(request.body(),UserBean.class);
-     // user contains the user to invite
-	 return "{\"invite\": \"true\"}";
-	 
+     possibleUsers.add(user);
+	 return gson.toJson(possibleUsers);
  }
+
+ private String sendInvite(Request request, Response response) {
+
+      response.type("application/json");
+      response.header("Access-Control-Allow-Headers", "*");
+      //@TODO add DB connection
+     String user = request.queryParams("user");
+     //query DB for user
+     //validate that the user is there
+     return "[{\"inviteFor\":\"" + user + "\"}]";
+  }
  
   private String team(Request request, Response response) {
 
