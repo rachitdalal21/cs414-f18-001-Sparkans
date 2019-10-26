@@ -1,11 +1,9 @@
 package com.sparkans.banqi.server;
 
-import spark.Filter;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 
-import java.util.HashMap;
 
 import static spark.Spark.get;
 import static spark.Spark.port;
@@ -41,6 +39,7 @@ public class MicroServer {
 
     // register all micro-services and the function that services them.
     // start with HTTP GET
+     //apply CorsFilter
      CorsFilter.apply();
     get("/about", this::about);
     get("/echo", this::echo);
@@ -109,6 +108,7 @@ public class MicroServer {
 	 
 	 response.type("application/json");
      response.header("Access-Control-Allow-Headers", "*");
+     //@TODO add DB connection
 	 return "{\"registered\": \"true\"}";
 	 
  }
@@ -116,14 +116,18 @@ public class MicroServer {
  private String signin(Request request, Response response) {
 	 
 	 response.type("application/json");
-	 return "{signedin: \"true\"}";
+     response.header("Access-Control-Allow-Headers", "*");
+     //@TODO add DB connection
+	 return "{\"signedin\": \"true\"}";
 	 
  }
  
  private String invite(Request request, Response response) {
 	 
 	 response.type("application/json");
-	 return "{invite: \"true\"}";
+     response.header("Access-Control-Allow-Headers", "*");
+     //@TODO add DB connection
+	 return "{\"invite\": \"true\"}";
 	 
  }
  
