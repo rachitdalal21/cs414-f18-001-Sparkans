@@ -1,7 +1,11 @@
 package com.sparkans.banqi.user;
 
-import com.sparkans.banqi.db.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.sparkans.banqi.db.MySqlCon;
 
 public class UserSignIn {
 
@@ -13,28 +17,27 @@ public class UserSignIn {
 	public UserSignIn() {
 		this.userBean = new UserBean();
 		conn = MySqlCon.getConnection();
-		try {
-			statement = conn.prepareStatement("SELECT * FROM sparkans.Banqi_Users");
-		} catch (SQLException e) {
-
-		}
+		
 	}
 
 	//validating if nickname present in Database 
 	public boolean validNickName(String nickName) throws SQLException {
-		resultSet = statement.executeQuery();
-		while (resultSet.next()) {
-			if (resultSet.getString("nickname").equals(nickName)) {
+		try {
+			statement = conn.prepareStatement("SELECT nickname FROM sparkans.Banqi_Users WHERE nickname = ?");
+            statement.setString(1, nickName);
+			resultSet = statement.executeQuery();
+			if(resultSet.next())
+			{
 				return true;
 			}
+		} catch (SQLException e) {
+
 		}
 		return false;
 	}
 
 	public boolean signInUser(UserBean userBean) throws SQLException {
 
-		resultSet = statement.executeQuery();
-		while (resultSet.next()) {		
 
 			if (validNickName(userBean.getNickname())) 
 			{
@@ -72,7 +75,7 @@ public class UserSignIn {
 				System.out.println("Please register to play the Game!!");
 				return false;
 			}
-		}
+		//}
 		conn.close();
 		return false;
 	}
