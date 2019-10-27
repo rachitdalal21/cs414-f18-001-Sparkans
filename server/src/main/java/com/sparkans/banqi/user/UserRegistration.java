@@ -15,14 +15,15 @@ public class UserRegistration {
 		this.userBean = new UserBean();
 		conn = MySqlCon.getConnection();
 		try {
-			statement = conn.prepareStatement("SELECT * FROM sparkans.Banqi_Users");
+			statement = conn.prepareStatement("SELECT nickname, password, email_id FROM sparkans.Banqi_Users");
 		} catch (SQLException e) {
-
+			e.printStackTrace();
 		}
 	}
 
 	//validating if email_id is unique
 	public boolean validateEmail(String email) throws SQLException {
+
 		resultSet = statement.executeQuery();
 		while (resultSet.next()) {
 			if (email.equals(resultSet.getString("email_id"))) {
@@ -33,16 +34,29 @@ public class UserRegistration {
 		return true;
 	}
 
-	//validating if nickname is unique
+	//validating if nickname is unique and follows the criteria.
 	public boolean validateNickName(String nickName) throws SQLException {
+
 		resultSet = statement.executeQuery();
-		while (resultSet.next()) {
-			if (resultSet.getString("nickname").equals(nickName)) {
-				System.out.println("Nickname already exists");
-				return false;
+		String nickname_Pattern = "^[ A-Za-z0-9_.\\s]*$";
+		Pattern pattern = Pattern.compile(nickname_Pattern);
+		Matcher matcher = pattern.matcher(nickName);
+
+		if (matcher.matches()) 
+		{
+			while (resultSet.next()) {
+				if (resultSet.getString("nickname").equalsIgnoreCase(nickName)) {
+					System.out.println("Nickname already exists");
+					return false;
+				}
 			}
+			return true;
 		}
-		return true;
+		else
+		{
+			System.out.println("Nickname entered doesnot staisfy the minimum criteria.");
+			return false;
+		}
 	}
 
 	/* Password Criteria implemented are:
@@ -51,6 +65,7 @@ public class UserRegistration {
 	 * Contain at least on special character from [ @ # $ % ! . ].
 	 */
 	public boolean validatePassword(String password) throws SQLException {
+
 		String password_Pattern = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!]).{8,40})";
 		Pattern pattern = Pattern.compile(password_Pattern);
 		Matcher matcher = pattern.matcher(password);
@@ -66,39 +81,54 @@ public class UserRegistration {
 
 	public boolean createUser(UserBean userBean) throws SQLException {
 
-		if (validateEmail(userBean.getEmail()) && validateNickName(userBean.getNickname()) && validatePassword(userBean.getPassword()))
+		try
 		{
-			System.out.println("\nInserting records into table...");
+			if (validateEmail(userBean.getEmail()) && validateNickName(userBean.getNickname()) && validatePassword(userBean.getPassword()))
+			{
+				System.out.println("\nInserting records into table...");
 
-			String sql = "INSERT INTO sparkans.Banqi_Users"
-					+ "(nickname, password,email_id,isActive_flag,created_TS,isLoggedIn_flag,lastLoggedIn_TS)"
-					+ " VALUES(?, ?, ?, ?, ?, ?, ?)";
+				String sql = "INSERT INTO sparkans.Banqi_Users"
+						+ "(nickname, password, email_id, isActive_flag, created_TS, isLoggedIn_flag, lastLoggedIn_TS)"
+						+ " VALUES(?, ?, ?, ?, ?, ?, ?)";
 
-			statement = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
-			ResultSet keyResultSet = statement.getGeneratedKeys();
+				statement = conn.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+				ResultSet keyResultSet = statement.getGeneratedKeys();
+				if (keyResultSet.next()) {
+					int user_id = keyResultSet.getInt(1);
+				}
 
-			if (keyResultSet.next()) {
-				int user_id = keyResultSet.getInt(1);
+				statement.setString(1, userBean.getNickname());
+				statement.setString(2, userBean.getPassword());
+				statement.setString(3, userBean.getEmail());
+				statement.setString(4, String.valueOf('Y'));
+				statement.setTimestamp(5, userBean.getCreateTS() );
+				statement.setString(6, String.valueOf('N'));
+				//statement.setTimestamp(7, userBean.getLastLoggedInTS());
+				statement.setNull(7, java.sql.Types.TIMESTAMP);
+
+				statement.executeUpdate();
+				System.out.println("You are successfully Registered in the Game!!");
+				return true;
+
+			} else {
+				System.out.println("Could not Register!!");
+				return false;
 			}
-
-			statement.setString(1, userBean.nickName);
-			statement.setString(2, userBean.password);
-			statement.setString(3, userBean.email);
-			statement.setString(4, String.valueOf("Y"));
-			statement.setTimestamp(5, userBean.createdTS);
-			statement.setString(6, String.valueOf("Y"));
-			statement.setTimestamp(7, userBean.lastLoggedInTS);
-
-			statement.executeUpdate();
-			System.out.println("You are successfully Registered in the Game!!");
-			return true;
-
-		} else {
-			System.out.println("Could not Register!!");
-			resultSet.close();
-		    conn.close();
-			return false;
+		}catch (SQLException e) {
+			System.out.println("Something went wrong in User Registration!!");
 		}
+		finally {
+			if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+            	statement.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+		}
+		return false;
 	}
 
 }
