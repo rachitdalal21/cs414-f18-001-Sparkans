@@ -59,6 +59,7 @@ public class MicroServer {
     post("/signin", this::signin);
     get("/invite", this::invite);
     get("/sendInvite", this::sendInvite);
+    get("/startGame", this::startGame);
 
      options("/*", (request,response)->{
          String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
@@ -174,10 +175,24 @@ public class MicroServer {
       response.type("application/json");
       response.header("Access-Control-Allow-Headers", "*");
       //@TODO add DB connection
-     String user = request.queryParams("user");
+     String user = request.queryParams("to");
+     String fromUser = request.queryParams("from");
      //query DB for user
      //validate that the user is there
-     return "[{\"inviteFor\":\"" + user + "\"}]";
+     return "[{\"inviteFor\":\"" + user + "\"}, {\"from\": \"" + fromUser + "\"}]";
+  }
+
+  private String startGame(Request request, Response response){
+      response.type("application/json");
+      response.header("Access-Control-Allow-Headers", "*");
+
+      String user = request.queryParams("user1");
+      String fromUser = request.queryParams("user2");
+      //@TODO
+      //query DB for users
+      //call gameManager.newGame(user1,user2)
+      //return the gameboard state
+      return "[{}]";
   }
  
   private String team(Request request, Response response) {
