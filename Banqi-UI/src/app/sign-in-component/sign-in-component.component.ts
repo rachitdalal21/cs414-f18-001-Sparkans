@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-sign-in-component',
@@ -14,7 +15,8 @@ export class SignInComponentComponent implements OnInit {
     password : new FormControl('', [Validators.required])
   });
 
-  constructor( private http: HttpClient ) { }
+  constructor( private http: HttpClient,
+               private router: Router) { }
 
   ngOnInit() {
   }
@@ -32,7 +34,7 @@ export class SignInComponentComponent implements OnInit {
   /*
  * This method will be called when user click on Register user button
  * */
-  signInUser ( value: FormGroup): Subscription {
+  signInUser ( value: FormGroup): any /*Subscription*/ {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -40,13 +42,16 @@ export class SignInComponentComponent implements OnInit {
     };
     const userDetails = value;
 
-    return this.http.post<any>( "http://localhost:31406/register", userDetails, httpOptions)
+    /*return this.http.post<any>( "http://localhost:31406/register", userDetails, httpOptions)
       .subscribe(( results ) => {
         debugger;
         // this.result = results;
       }, (error) => {
         debugger;
-      });
+      });*/
+    if( true ) {
+      this.router.navigate(['gamePlayAndInvite']);
+    }
 
   }
 }

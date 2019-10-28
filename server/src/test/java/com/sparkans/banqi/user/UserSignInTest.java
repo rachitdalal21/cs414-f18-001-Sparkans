@@ -17,7 +17,7 @@ public class UserSignInTest {
 
 		// default test
 		testSubject = createTestSubject();
-		result = testSubject.validNickName(nickName);
+		//result = testSubject.validUser(nickName);
 	}
 
 	@Test

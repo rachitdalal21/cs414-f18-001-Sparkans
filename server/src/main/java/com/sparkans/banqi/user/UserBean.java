@@ -1,6 +1,7 @@
 package com.sparkans.banqi.user;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class UserBean{
 
@@ -52,12 +53,15 @@ public class UserBean{
 	}
 
 	//getter and setter methods for CreatedDate.
-	public Timestamp getCreateDate(){
+	public Timestamp getCreateTS(){
+		
+		LocalDateTime now = LocalDateTime.now();
+		Timestamp createdTS = Timestamp.valueOf(now);
 		return createdTS;
 	}
 
-	public void setCreateDate(Timestamp createDate) {
-		this.createdTS = createDate;
+	public void setCreateTS(Timestamp createdTS) {
+		this.createdTS = createdTS;
 	}
 
 	//getter and setter methods for isLoggedIn_flag.
@@ -71,6 +75,9 @@ public class UserBean{
 
 	//getter and setter methods for lastLoggedInTS.
 	public  Timestamp getLastLoggedInTS(){
+		
+		LocalDateTime now = LocalDateTime.now();
+		Timestamp lastLoggedInTS = Timestamp.valueOf(now);
 		return lastLoggedInTS;
 	}
 

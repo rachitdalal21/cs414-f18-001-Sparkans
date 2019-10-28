@@ -1,26 +1,38 @@
 package com.sparkans.banqi.db;
 
-import java.sql.*;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
+import com.sparkans.banqi.util.ContextPropertyLoader;
 
 public class MySqlCon {
 
-	private static String url = "jdbc:mysql://faure.cs.colostate.edu:3306/sparkans?useLegacyDatetimeCode=false&serverTimezone=UTC";
-	private static String username = "username";
-	private static String password = "password";
-	private static Connection conn;
+	public static Connection connection;
 
-	public static Connection getConnection(){  
-		try{
-			conn = DriverManager.getConnection(url,username,password);
-			
-			if(conn != null)
+	public static Connection getConnection()  {
+
+		if (connection != null) {
+			return connection;
+		}
+		ContextPropertyLoader propertyLoader = new ContextPropertyLoader();
+		try {
+			Properties props = propertyLoader.getPropValues();
+			System.out.println(props.getProperty("sparkans.mysql.url"));
+
+			connection = DriverManager.getConnection(props.getProperty("sparkans.mysql.url"),
+					props.getProperty("sparkans.mysql.username"), props.getProperty("sparkans.mysql.password"));
+			if (connection != null)
 				System.out.println("Connected to the database!");
 			else
 				System.out.println("Failed to make connection!");
 
-		}catch(SQLException e){ 
-			System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
-		}  
-		return conn;
+		} catch (IOException | SQLException e) {
+			System.err.format("Error Occured while estabilshing db connection: \n%s", e.getMessage());
+		}
+		return connection;
 	}
+
 }

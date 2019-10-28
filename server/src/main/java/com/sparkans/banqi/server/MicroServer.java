@@ -1,6 +1,9 @@
 package com.sparkans.banqi.server;
 
 import com.sparkans.banqi.user.UserBean;
+import com.sparkans.banqi.user.UserRegistration;
+import com.sparkans.banqi.user.UserSignIn;
+
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -12,6 +15,9 @@ import java.util.ArrayList;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
+
+import java.sql.SQLException;
+
 import static spark.Spark.options;
 
 /** A simple micro-server for the web.  Just what we need, nothing more.
@@ -109,17 +115,25 @@ public class MicroServer {
     return Greeting.html(request.params(":name"));
   }
 
- private String register(Request request, Response response) {
-	 
-	 response.type("application/json");
-     response.header("Access-Control-Allow-Headers", "*");
-     //@TODO add DB connection
-     Gson gson = new Gson();
-     UserBean user = gson.fromJson(request.body(),UserBean.class);
-     //user contains the user we want to register
-	 return "{\"registered\": \"true\"}";
-	 
- }
+	private String register(Request request, Response response) {
+
+		response.type("application/json");
+		response.header("Access-Control-Allow-Headers", "*");
+		// @TODO add DB connection
+		Gson gson = new Gson();
+		UserBean user = gson.fromJson(request.body(), UserBean.class);
+		// user contains the user we want to register
+		UserRegistration userRegistration = new UserRegistration();
+		try {
+			userRegistration.createUser(user);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "{\"registered\": \"false\"}";
+		}
+		return "{\"registered\": \"true\"}";
+
+	}
  
  private String signin(Request request, Response response) {
 	 
@@ -129,6 +143,14 @@ public class MicroServer {
      Gson gson = new Gson();
      UserBean user = gson.fromJson(request.body(),UserBean.class);
      //user contains the user to sign in
+     UserSignIn userSignin = new UserSignIn();
+     try {
+		userSignin.signInUser(user);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return "{\"signedin\": \"false\"}";
+	}
 	 return "{\"signedin\": \"true\"}";
 	 
  }

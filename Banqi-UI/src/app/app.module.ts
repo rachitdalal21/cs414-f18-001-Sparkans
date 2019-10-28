@@ -13,13 +13,15 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {HttpClientModule} from "@angular/common/http";
+import { GamePlayComponent } from './game-play/game-play.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterUserComponent,
     SignInComponentComponent,
-    HomeComponent
+    HomeComponent,
+    GamePlayComponent
   ],
   imports: [
     BrowserModule,
