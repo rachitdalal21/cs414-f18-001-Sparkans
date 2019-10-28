@@ -1,5 +1,7 @@
 package com.sparkans.banqi.server;
 
+import com.sparkans.banqi.game.BanqiBoard;
+import com.sparkans.banqi.game.GameManager;
 import com.sparkans.banqi.user.UserBean;
 import com.sparkans.banqi.user.UserRegistration;
 import com.sparkans.banqi.user.UserSignIn;
@@ -28,6 +30,8 @@ public class MicroServer {
   private int    port;
   private String name;
   private String path = "/public";
+
+  private GameManager gameManager = new GameManager();
 
   /** Creates a micro-server to load static files and provide REST APIs.
    *
@@ -186,13 +190,16 @@ public class MicroServer {
       response.type("application/json");
       response.header("Access-Control-Allow-Headers", "*");
 
+      //for now we create UserBean users from the name given but eventually we will pull users from DB
       String user = request.queryParams("user1");
       String fromUser = request.queryParams("user2");
-      //@TODO
-      //query DB for users
-      //call gameManager.newGame(user1,user2)
-      //return the gameboard state
-      return "[{}]";
+      UserBean user1 = new UserBean();
+      user1.setNickName(user);
+      UserBean user2 = new UserBean();
+      user2.setNickName(fromUser);
+
+      Gson gson = new Gson();
+      return gson.toJson(gameManager.addGame(user1,user2), BanqiBoard.class);
   }
  
   private String team(Request request, Response response) {
