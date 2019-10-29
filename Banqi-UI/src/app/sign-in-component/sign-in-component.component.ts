@@ -42,16 +42,13 @@ export class SignInComponentComponent implements OnInit {
     };
     const userDetails = value;
 
-    /*return this.http.post<any>( "http://localhost:31406/register", userDetails, httpOptions)
+    return this.http.post<any>( "http://localhost:31406/register", userDetails, httpOptions)
       .subscribe(( results ) => {
-        debugger;
-        // this.result = results;
+        if( results.signedin ){
+          this.router.navigate(['invite']);
+        }
       }, (error) => {
-        debugger;
-      });*/
-    if( true ) {
-      this.router.navigate(['invite']);
-    }
+      });
 
   }
 }
