@@ -42,7 +42,7 @@ export class SignInComponentComponent implements OnInit {
     };
     const userDetails = value;
 
-    return this.http.post<any>( "http://localhost:31406/register", userDetails, httpOptions)
+    return this.http.post<any>( "http://localhost:31406/signin", userDetails, httpOptions)
       .subscribe(( results ) => {
         if( results.signedin ){
           this.router.navigate(['invite']);
