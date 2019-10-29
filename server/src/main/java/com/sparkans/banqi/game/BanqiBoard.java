@@ -14,10 +14,10 @@ public class BanqiBoard {
 
 	private BanqiPiece[][] board;
 
-	// initialize the board to 4x8 array
+	// initialize the board to 8x4 array
 	public BanqiBoard() {
 		if (this.board == null) {
-			this.board = new BanqiPiece[4][8];
+			this.board = new BanqiPiece[8][4];
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class BanqiBoard {
 	}
 
 	private boolean faceUp(BanqiPiece piece) {
-		// TODO Auto-generated method stub
 		return false;
 	}
+	
 }
