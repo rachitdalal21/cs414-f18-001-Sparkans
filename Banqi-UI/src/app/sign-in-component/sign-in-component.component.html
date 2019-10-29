@@ -3,8 +3,8 @@
   <form [formGroup]="signInForm"  (ngSubmit)="signInUser(signInForm.value)">
   <div class="example-container">
     <mat-form-field>
-      <input matInput type="email" placeholder="Enter your email" formControlName="email" required>
-      <mat-error *ngIf="signInForm.controls['email'].invalid">{{getErrorMessage('')}}</mat-error>
+      <input matInput placeholder="Enter your nickName" formControlName="nickName" required>
+      <mat-error *ngIf="signInForm.controls['nickName'].invalid">{{getErrorMessage('')}}</mat-error>
     </mat-form-field>
   </div>
   <div class="example-container">

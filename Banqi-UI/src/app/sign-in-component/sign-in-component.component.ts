@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 })
 export class SignInComponentComponent implements OnInit {
   signInForm = new FormGroup({
-    email : new FormControl('', [Validators.required, Validators.email]),
+    nickName : new FormControl('', [Validators.required]),
     password : new FormControl('', [Validators.required])
   });
 
@@ -23,8 +23,8 @@ export class SignInComponentComponent implements OnInit {
 
   getErrorMessage(type: String) {
     if( type.length === 0 ){
-      return this.signInForm.controls['email'].hasError('required') ? 'You must enter a value' :
-        this.signInForm.controls['email'].hasError('email') ? 'Not a valid email' :
+      return this.signInForm.controls['nickName'].hasError('required') ? 'You must enter a value' :
+        this.signInForm.controls['nickName'].hasError('email') ? 'Not a valid nickName' :
           '';
     } else {
       return this.signInForm.controls['password'].hasError('required') ? 'You must enter a password' : '';
@@ -50,7 +50,7 @@ export class SignInComponentComponent implements OnInit {
         debugger;
       });*/
     if( true ) {
-      this.router.navigate(['gamePlayAndInvite']);
+      this.router.navigate(['invite']);
     }
 
   }

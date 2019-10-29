@@ -5,12 +5,14 @@ import {SignInComponentComponent} from "./sign-in-component/sign-in-component.co
 import {AppComponent} from "./app.component";
 import {HomeComponent} from "./home/home.component";
 import {GamePlayComponent} from "./game-play/game-play.component";
+import {InviteComponent} from "./invite/invite.component";
 
 
 const routes: Routes = [
   { path: 'register', component: RegisterUserComponent },
   { path: 'signin', component: SignInComponentComponent },
-  { path: 'gamePlayAndInvite', component: GamePlayComponent },
+  { path: 'gamePlay', component: GamePlayComponent },
+  { path: 'invite', component: InviteComponent },
   { path: '',
     redirectTo: '/Home',
     pathMatch: 'full'
