@@ -1,5 +1,7 @@
 package com.sparkans.banqi.server;
 
+import com.sparkans.banqi.game.BanqiBoard;
+import com.sparkans.banqi.game.GameManager;
 import com.sparkans.banqi.user.UserBean;
 import com.sparkans.banqi.user.UserRegistration;
 import com.sparkans.banqi.user.UserSignIn;
@@ -9,6 +11,8 @@ import spark.Response;
 import spark.Spark;
 
 import com.google.gson.*;
+
+import java.util.ArrayList;
 
 import static spark.Spark.get;
 import static spark.Spark.port;
@@ -26,6 +30,8 @@ public class MicroServer {
   private int    port;
   private String name;
   private String path = "/public";
+
+  private GameManager gameManager = new GameManager();
 
   /** Creates a micro-server to load static files and provide REST APIs.
    *
@@ -55,7 +61,9 @@ public class MicroServer {
     //for client sending data, HTTP POST is used instead of a GET
     post("/register", this::register);
     post("/signin", this::signin);
-    post("/invite", this::invite);
+    get("/invite", this::invite);
+    get("/sendInvite", this::sendInvite);
+    get("/startGame", this::startGame);
 
      options("/*", (request,response)->{
          String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
@@ -157,12 +165,42 @@ public class MicroServer {
 	 response.type("application/json");
      response.header("Access-Control-Allow-Headers", "*");
      //@TODO add DB connection
+     String user = request.queryParams("user");
+     //query DB for user
+     //store possible users in ArrayList
+     ArrayList<String> possibleUsers = new ArrayList<>();
      Gson gson = new Gson();
-     UserBean user = gson.fromJson(request.body(),UserBean.class);
-     // user contains the user to invite
-	 return "{\"invite\": \"true\"}";
-	 
+     possibleUsers.add(user);
+	 return gson.toJson(possibleUsers);
  }
+
+ private String sendInvite(Request request, Response response) {
+
+      response.type("application/json");
+      response.header("Access-Control-Allow-Headers", "*");
+      //@TODO add DB connection
+     String user = request.queryParams("to");
+     String fromUser = request.queryParams("from");
+     //query DB for user
+     //validate that the user is there
+     return "[{\"inviteFor\":\"" + user + "\"}, {\"from\": \"" + fromUser + "\"}]";
+  }
+
+  private String startGame(Request request, Response response){
+      response.type("application/json");
+      response.header("Access-Control-Allow-Headers", "*");
+
+      //for now we create UserBean users from the name given but eventually we will pull users from DB
+      String user = request.queryParams("user1");
+      String fromUser = request.queryParams("user2");
+      UserBean user1 = new UserBean();
+      user1.setNickName(user);
+      UserBean user2 = new UserBean();
+      user2.setNickName(fromUser);
+
+      Gson gson = new Gson();
+      return gson.toJson(gameManager.addGame(user1,user2), BanqiBoard.class);
+  }
  
   private String team(Request request, Response response) {
 
