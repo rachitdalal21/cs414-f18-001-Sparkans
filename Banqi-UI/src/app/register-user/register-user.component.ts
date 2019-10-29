@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Observable, Subscription} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-register-user',
