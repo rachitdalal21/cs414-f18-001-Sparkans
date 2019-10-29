@@ -9,24 +9,22 @@ import com.sparkans.banqi.db.MySqlCon;
 
 public class UserInvite {
 
-	private UserBean userBean;
 	private Connection conn = null;
 	private PreparedStatement statement = null;
 	private ResultSet resultSet = null;
 
 	public UserInvite() {
-		this.userBean = new UserBean();
 		conn = MySqlCon.getConnection();
 	}
 
-	public boolean invitedUser(UserBean userBean) throws SQLException {
+	public boolean invitedUser(String user) throws SQLException {
 
 		try
 		{
 			statement = conn.prepareStatement("SELECT nickname, email_id, isActive_flag, isLoggedIn_flag  "
 					+ "FROM sparkans.Banqi_Users WHERE nickname =? OR email_id=?");
-			statement.setString(1, userBean.getNickname());
-			statement.setString(2, userBean.getEmail());
+			statement.setString(1, user);
+			statement.setString(2, user);
 			resultSet = statement.executeQuery();
 
 			if (resultSet.next())
