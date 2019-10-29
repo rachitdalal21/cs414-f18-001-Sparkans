@@ -10,6 +10,7 @@ import {Subscription} from "rxjs";
   styleUrls: ['./register-user.component.css']
 })
 export class RegisterUserComponent implements OnInit {
+  REGISTER_USER_URL = "http://localhost:31406/register";
   registrationForm = new FormGroup({
 
     email : new FormControl('', [Validators.required, Validators.email]),
@@ -54,7 +55,7 @@ export class RegisterUserComponent implements OnInit {
     };
     const userDetails = value;
 
-    return this.http.post<any>( "http://localhost:31406/register", userDetails, httpOptions)
+    return this.http.post<any>( this.REGISTER_USER_URL, userDetails, httpOptions)
       .subscribe(( results ) => {
         if( results.registered ){
           /* TODO: emit subject from here to app component to display name on the header*/
@@ -63,7 +64,7 @@ export class RegisterUserComponent implements OnInit {
         }
       // this.result = results;
     }, (error) => {
-        debugger;
+        console.log("Register API Error", error.toString());
       });
 
   }

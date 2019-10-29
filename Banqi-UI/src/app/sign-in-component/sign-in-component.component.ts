@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Subscription} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 
@@ -10,6 +9,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./sign-in-component.component.css']
 })
 export class SignInComponentComponent implements OnInit {
+  SIGN_IN_URL = "http://localhost:31406/signin";
   signInForm = new FormGroup({
     nickName : new FormControl('', [Validators.required]),
     password : new FormControl('', [Validators.required])
@@ -42,7 +42,7 @@ export class SignInComponentComponent implements OnInit {
     };
     const userDetails = value;
 
-    return this.http.post<any>( "http://localhost:31406/signin", userDetails, httpOptions)
+    return this.http.post<any>( this.SIGN_IN_URL, userDetails, httpOptions)
       .subscribe(( results ) => {
         if( results.signedin ){
           this.router.navigate(['invite']);
