@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {UserDetailsService} from "../Service/user-details.service";
 
 @Component({
   selector: 'app-sign-in-component',
@@ -16,7 +17,8 @@ export class SignInComponentComponent implements OnInit {
   });
 
   constructor( private http: HttpClient,
-               private router: Router) { }
+               private router: Router,
+               private userDetails: UserDetailsService ) { }
 
   ngOnInit() {
   }
@@ -45,6 +47,7 @@ export class SignInComponentComponent implements OnInit {
     return this.http.post<any>( this.SIGN_IN_URL, userDetails, httpOptions)
       .subscribe(( results ) => {
         if( results.signedin ){
+          this.userDetails.userName = value.controls['nickName'].value;
           this.router.navigate(['invite']);
         }
       }, (error) => {
