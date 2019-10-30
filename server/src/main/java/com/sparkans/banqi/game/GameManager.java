@@ -13,6 +13,15 @@ public class GameManager {
         return null;
     }
 
+    public BanqiBoard getGame(String user1, String user2){
+        for(BanqiBoard b : boards){
+            if(b.getUser1().getNickname().equals(user1) && b.getUser2().getNickname().equals(user2)){
+                return b;
+            }
+        }
+        return null;
+    }
+
     public boolean removeGame(UserBean user1, UserBean user2){
 
         return false;

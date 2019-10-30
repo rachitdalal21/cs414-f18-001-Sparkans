@@ -2,10 +2,7 @@ package com.sparkans.banqi.server;
 
 import com.sparkans.banqi.game.BanqiBoard;
 import com.sparkans.banqi.game.GameManager;
-import com.sparkans.banqi.user.UserBean;
-import com.sparkans.banqi.user.UserInvite;
-import com.sparkans.banqi.user.UserRegistration;
-import com.sparkans.banqi.user.UserSignIn;
+import com.sparkans.banqi.user.*;
 
 import spark.Request;
 import spark.Response;
@@ -33,6 +30,7 @@ public class MicroServer {
 	private String path = "/public";
 
 	private GameManager gameManager = new GameManager();
+	private ArrayList<Invitation> invites = new ArrayList<>();
 
 	/** Creates a micro-server to load static files and provide REST APIs.
 	 *
@@ -136,6 +134,9 @@ public class MicroServer {
 			e.printStackTrace();
 			return "{\"registered\": \"false\"}";
 		}
+        catch (Exception e){
+            return "{\"registered\": \"false\"}";
+        }
 		return "{\"registered\": \"true\"}";
 
 	}
@@ -155,6 +156,9 @@ public class MicroServer {
 			e.printStackTrace();
 			return "{\"signedin\": \"false\"}";
 		}
+		catch (Exception e){
+		    return "{\"signedin\": \"false\"}";
+        }
 		return "{\"signedin\": \"true\"}";
 
 	}
@@ -181,6 +185,7 @@ public class MicroServer {
 		String user = request.queryParams("to");
 		String fromUser = request.queryParams("from");
 
+		System.out.println(user + fromUser);
 		UserInvite userInvite = new UserInvite();
 		try 
 		{
@@ -189,9 +194,40 @@ public class MicroServer {
 			e.printStackTrace();
 			return "{\"invitedUser\": \"false\"}";
 		}
+        catch (Exception e){
+            return "{\"invitedUser\": \"false\"}";
+        }
+        Invitation invite = new Invitation(user,fromUser);
+        invites.add(invite);
 		return "[{\"inviteFor\":\"" + user + "\"}, {\"from\": \"" + fromUser + "\"}]";
 
 	}
+
+	private String waitingInvite(Request request,Response response){
+        response.type("application/json");
+        response.header("Access-Control-Allow-Headers", "*");
+
+        String User = request.queryParams("user");
+        Gson gson = new Gson();
+
+        for(Invitation in:invites){
+            if(in.to.equals(User)){
+                in.accepted = true;
+                UserBean user1 = new UserBean();
+                user1.setNickName(in.to);
+                UserBean user2 = new UserBean();
+                user2.setNickName(in.from);
+
+                return gson.toJson(gameManager.addGame(user1,user2), BanqiBoard.class);
+            }
+            else if(in.from.equals(User) && in.accepted == true){
+                return gson.toJson(gameManager.getGame(in.to,in.from), BanqiBoard.class);
+            }
+        }
+        return "[{\"inviteStatus\":\"not accepted\"}]";
+
+    }
+
 
 	private String startGame(Request request, Response response){
 		response.type("application/json");
