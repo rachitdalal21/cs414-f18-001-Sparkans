@@ -1,5 +1,7 @@
 package com.sparkans.banqi.game;
 
+import com.sparkans.banqi.user.UserBean;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -13,11 +15,22 @@ import java.util.regex.Pattern;
 public class BanqiBoard {
 
 	private BanqiPiece[][] board;
+	private UserBean user1;
+	private UserBean user2;
 
-	// initialize the board to 8x4 array
+	// initialize the board to 4x8 array
 	public BanqiBoard() {
 		if (this.board == null) {
-			this.board = new BanqiPiece[8][4];
+			this.board = new BanqiPiece[4][8];
+		}
+	}
+
+	public BanqiBoard(UserBean user1, UserBean user2) {
+		this.user1 = user1;
+		this.user2 = user2;
+
+		if (this.board == null) {
+			this.board = new BanqiPiece[4][8];
 		}
 	}
 	
@@ -125,5 +138,12 @@ public class BanqiBoard {
 	private boolean faceUp(BanqiPiece piece) {
 		return false;
 	}
-	
+
+	public UserBean getUser1(){
+		return user1;
+	}
+
+	public UserBean getUser2(){
+		return user2;
+	}
 }
