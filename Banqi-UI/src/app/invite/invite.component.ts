@@ -1,6 +1,6 @@
   import {Component, OnDestroy, OnInit} from '@angular/core';
   import {Router} from "@angular/router";
-  import {HttpClient, HttpHeaders} from "@angular/common/http";
+  import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
   import {concatMap, flatMap, map, switchMap, take, takeWhile} from "rxjs/operators";
   import {interval, pipe, timer} from "rxjs";
 
@@ -45,17 +45,17 @@
             'Content-Type': 'application/json'
           })
         };
-      httpOptions.headers.append('from', inviteUser.value);
-      httpOptions.headers.append('to', "Test");
 
-      return this.http.get<any>( this.SEND_INVITE, httpOptions)
+      let params = new HttpParams().set('from', inviteUser.value).set('to', "test");
+
+      return this.http.get<any>( this.SEND_INVITE, {headers: httpOptions.headers, params: params})
         .subscribe(( results ) => {
           if( results.registered ){
-            debugger;
+            console.log("Working httpGet Invite");
           }
           // this.result = results;
         }, (error) => {
-          debugger;
+          console.log(" Error Working httpGet Invite user ", error);
         });
 
     }
