@@ -1,5 +1,7 @@
 package com.sparkans.banqi.game;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,6 +13,7 @@ public abstract class BanqiPiece {
 	protected BanqiBoard board;
 	protected int row;
 	protected int column;
+	@Expose
 	protected Color color;
 
 	public BanqiPiece(BanqiBoard board, Color color) {
