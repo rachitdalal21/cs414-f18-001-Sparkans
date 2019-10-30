@@ -1,6 +1,7 @@
 package com.sparkans.banqi.server;
 
 import com.sparkans.banqi.game.BanqiBoard;
+import com.sparkans.banqi.game.BanqiPiece;
 import com.sparkans.banqi.game.GameManager;
 import com.sparkans.banqi.user.*;
 
@@ -209,7 +210,7 @@ public class MicroServer {
         response.header("Access-Control-Allow-Headers", "*");
 
         String User = request.queryParams("user");
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         for(Invitation in:invites){
             if(in.to.equals(User)){
@@ -217,7 +218,7 @@ public class MicroServer {
             }
             else if(in.from.equals(User) && in.accepted == true){
                 invites.remove(in);
-                return gson.toJson(gameManager.getGame(in.to,in.from), BanqiBoard.class);
+                return gson.toJson(gameManager.getGame(in.to,in.from), BanqiPiece[][].class);
             }
         }
         return "[{\"inviteStatus\":\"not accepted\"}]";
@@ -234,12 +235,12 @@ public class MicroServer {
 		for(Invitation i : invites){
 		    if(i.to.equals(user)){
 		        i.accepted = true;
-                Gson gson = new Gson();
+				Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 UserBean user1 = new UserBean();
                 user1.setNickName(i.to);
                 UserBean user2 = new UserBean();
                 user2.setNickName(i.from);
-                return gson.toJson(gameManager.addGame(user1,user2), BanqiBoard.class);
+                return gson.toJson(gameManager.addGame(user1,user2), BanqiPiece[][].class);
             }
         }
 
