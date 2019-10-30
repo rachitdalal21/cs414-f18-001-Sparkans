@@ -9,8 +9,9 @@ public class GameManager {
     private ArrayList<BanqiBoard> boards = new ArrayList<BanqiBoard>();
 
     public BanqiBoard addGame(UserBean user1, UserBean user2){
-
-        return null;
+        BanqiBoard b = new BanqiBoard(user1,user2);
+        boards.add(b);
+        return b;
     }
 
     public BanqiBoard getGame(String user1, String user2){
