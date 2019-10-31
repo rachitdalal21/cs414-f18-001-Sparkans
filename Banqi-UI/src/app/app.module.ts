@@ -14,7 +14,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {HttpClientModule} from "@angular/common/http";
 import { GamePlayComponent } from './game-play/game-play.component';
-import {AngularDraggableModule} from "angular2-draggable";
+
 import { InviteComponent } from './invite/invite.component';
 
 @NgModule({
@@ -36,8 +36,8 @@ import { InviteComponent } from './invite/invite.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    HttpClientModule,
-    AngularDraggableModule
+    HttpClientModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

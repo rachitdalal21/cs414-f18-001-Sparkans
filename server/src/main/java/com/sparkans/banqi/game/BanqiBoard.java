@@ -1,7 +1,10 @@
 package com.sparkans.banqi.game;
 
+import com.sparkans.banqi.user.UserBean;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,17 +16,89 @@ import java.util.regex.Pattern;
 public class BanqiBoard {
 
 	private BanqiPiece[][] board;
+	private UserBean user1;
+	private UserBean user2;
 
-	// initialize the board to 8x4 array
+	// initialize the board to 4x8 array
 	public BanqiBoard() {
 		if (this.board == null) {
-			this.board = new BanqiPiece[8][4];
+			this.board = new BanqiPiece[4][8];
+			initialize();
 		}
+	}
+
+	public BanqiBoard(UserBean user1, UserBean user2) {
+		this.user1 = user1;
+		this.user2 = user2;
+
+		if (this.board == null) {
+			this.board = new BanqiPiece[4][8];
+			initialize();
+		}
+	}
+
+	public BanqiPiece[][] getBoard(){
+		return board;
 	}
 	
 	// initialize the board to standard Banqi opening state
 		public void initialize() {
-		
+			BanqiPiece[] pieces = new BanqiPiece[32];
+			Random r = new Random();
+
+			pieces[0] = new General(this, BanqiPiece.Color.RED);
+			pieces[1] = new General(this, BanqiPiece.Color.WHITE);
+
+			pieces[2] = new Advisor(this, BanqiPiece.Color.RED);
+			pieces[3] = new Advisor(this, BanqiPiece.Color.WHITE);
+			pieces[4] = new Advisor(this, BanqiPiece.Color.RED);
+			pieces[5] = new Advisor(this, BanqiPiece.Color.WHITE);
+
+			pieces[6] = new Minister(this, BanqiPiece.Color.RED);
+			pieces[7] = new Minister(this, BanqiPiece.Color.WHITE);
+			pieces[8] = new Minister(this, BanqiPiece.Color.RED);
+			pieces[9] = new Minister(this, BanqiPiece.Color.WHITE);
+
+			pieces[10] = new Chariot(this, BanqiPiece.Color.RED);
+			pieces[11] = new Chariot(this, BanqiPiece.Color.WHITE);
+			pieces[12] = new Chariot(this, BanqiPiece.Color.RED);
+			pieces[13] = new Chariot(this, BanqiPiece.Color.WHITE);
+
+			pieces[14] = new Horse(this, BanqiPiece.Color.RED);
+			pieces[15] = new Horse(this, BanqiPiece.Color.WHITE);
+			pieces[16] = new Horse(this, BanqiPiece.Color.RED);
+			pieces[17] = new Horse(this, BanqiPiece.Color.WHITE);
+
+			pieces[18] = new Soldier(this, BanqiPiece.Color.RED);
+			pieces[19] = new Soldier(this, BanqiPiece.Color.WHITE);
+			pieces[20] = new Soldier(this, BanqiPiece.Color.RED);
+			pieces[21] = new Soldier(this, BanqiPiece.Color.WHITE);
+			pieces[22] = new Soldier(this, BanqiPiece.Color.RED);
+			pieces[23] = new Soldier(this, BanqiPiece.Color.WHITE);
+			pieces[24] = new Soldier(this, BanqiPiece.Color.RED);
+			pieces[25] = new Soldier(this, BanqiPiece.Color.WHITE);
+			pieces[26] = new Soldier(this, BanqiPiece.Color.RED);
+			pieces[27] = new Soldier(this, BanqiPiece.Color.WHITE);
+
+			pieces[28] = new Cannon(this, BanqiPiece.Color.RED);
+			pieces[29] = new Cannon(this, BanqiPiece.Color.WHITE);
+			pieces[30] = new Cannon(this, BanqiPiece.Color.RED);
+			pieces[31] = new Cannon(this, BanqiPiece.Color.WHITE);
+
+			//assign each piece to a random spot on the board
+			for(int i=0; i<32;i++){
+
+				int randr = r.nextInt(4);
+				int randc = r.nextInt(8);
+				//if a spot is already assigned try a different one
+				while(board[randr][randc] != null){
+					randr = r.nextInt(4);
+					randc = r.nextInt(8);
+				}
+
+				board[randr][randc] = pieces[i];
+			}
+
 		}
 
 	// Helper Method to store row and column indexes as Key-Value Pair.
@@ -125,5 +200,12 @@ public class BanqiBoard {
 	private boolean faceUp(BanqiPiece piece) {
 		return false;
 	}
-	
+
+	public UserBean getUser1(){
+		return user1;
+	}
+
+	public UserBean getUser2(){
+		return user2;
+	}
 }
