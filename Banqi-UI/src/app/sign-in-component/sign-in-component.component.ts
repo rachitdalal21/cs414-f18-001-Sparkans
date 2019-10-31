@@ -47,7 +47,7 @@ export class SignInComponentComponent implements OnInit {
     return this.http.post<any>( this.SIGN_IN_URL, userDetails, httpOptions)
       .subscribe(( results ) => {
         if( results.signedin ){
-          this.userDetails.userName = value.controls['nickName'].value;
+          this.userDetails.userName = value['nickName'];
           this.router.navigate(['invite']);
         }
       }, (error) => {
