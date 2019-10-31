@@ -12,6 +12,7 @@
   })
   export class InviteComponent implements OnInit, OnDestroy {
     SEND_INVITE = "http://localhost:31406/sendInvite";
+    WAITING_INVITE = "http://localhost:31406/waitingInvite"
     obs;
     subscriber;
 
@@ -19,17 +20,36 @@
                  private http: HttpClient,
                  private userDetails: UserDetailsService ) {
 
-      /*this.obs =  timer(0, 10000 )
-        .pipe(switchMap(() => this.http.get(this.SEND_INVITE )));
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+
+      this.obs =  timer(0, 10000 )
+        .pipe(switchMap(() => this.http.get(this.WAITING_INVITE,
+                              {headers: httpOptions.headers,
+                                params: this.getWaitingUser()} )));
 
       this.subscriber = this.obs.subscribe((data) => {
-        console.log(data);
+        debugger;
+        if( data.inviteFrom != "" ) {
+          console.log("I have got Invite");
+        } else {
+          console.log("Your invitation got accepted");
+        }
       }, ( error ) => {
         console.log(error);
-      })*/
+      })
 
     }
     ngOnInit() {
+    }
+
+    getWaitingUser() {
+      const params = new HttpParams().set('user', this.userDetails.userName);
+
+      return params;
     }
 
     gamePlay() {
