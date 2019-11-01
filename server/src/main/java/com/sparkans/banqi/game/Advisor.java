@@ -9,7 +9,7 @@ public class Advisor extends BanqiPiece {
 	ArrayList<String> legalMoves;
 
 	@Expose
-	private static final String name = "Advisor";
+	public static final String name = "Advisor";
 
 	public Advisor(BanqiBoard board, Color color) {
 		super(board, color);
