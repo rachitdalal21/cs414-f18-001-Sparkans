@@ -3,6 +3,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {NotificationsService} from "angular2-notifications";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-register-user',
@@ -23,7 +25,8 @@ export class RegisterUserComponent implements OnInit {
   * Added HttpClient service to make rest calls
   * */
   constructor( private http: HttpClient,
-               private router: Router ) { }
+               private router: Router,
+               private _snackBar: MatSnackBar ) { }
 
   ngOnInit() {
 
@@ -65,6 +68,13 @@ export class RegisterUserComponent implements OnInit {
       // this.result = results;
     }, (error) => {
         console.log("Register API Error", error.toString());
+          this._snackBar.open("Register User has ", "", {
+            duration: 10000,
+            horizontalPosition: "right",
+            verticalPosition: "top",
+            panelClass: ["customSnackBar"]
+
+          });
       });
 
   }
