@@ -16,6 +16,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { GamePlayComponent } from './game-play/game-play.component';
 
 import { InviteComponent } from './invite/invite.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { InviteComponent } from './invite/invite.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    MatSnackBarModule,
     HttpClientModule
 
   ],
