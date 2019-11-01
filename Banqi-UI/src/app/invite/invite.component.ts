@@ -4,6 +4,7 @@
   import {concatMap, flatMap, map, switchMap, take, takeWhile} from "rxjs/operators";
   import {interval, pipe, timer} from "rxjs";
   import {UserDetailsService} from "../Service/user-details.service";
+  import {MatSnackBar} from "@angular/material/snack-bar";
 
   @Component({
     selector: 'app-invite',
@@ -12,13 +13,23 @@
   })
   export class InviteComponent implements OnInit, OnDestroy {
     SEND_INVITE = "http://localhost:31406/sendInvite";
-    WAITING_INVITE = "http://localhost:31406/waitingInvite"
+    WAITING_INVITE = "http://localhost:31406/waitingInvite";
+    ACCEPT_INVITATION = "http://localhost:31406/acceptInvite";
     obs;
     subscriber;
+    isInvitationSentByThisUser: boolean = false;
+    haveYouGotInvitation: boolean = false;
+    invitationFromUserName: string ;
 
     constructor( private router: Router,
                  private http: HttpClient,
-                 private userDetails: UserDetailsService ) {
+                 private userDetails: UserDetailsService,
+                 private _snackBar: MatSnackBar ) {
+
+      this.userDetails.invitationSubject.subscribe( ( value ) => {
+        this.invitationFromUserName = value.invitaionSentFrom ;
+        console.log("Updated after the invitation");
+      } )
 
       const httpOptions = {
         headers: new HttpHeaders({
@@ -32,18 +43,44 @@
                                 params: this.getWaitingUser()} )));
 
       this.subscriber = this.obs.subscribe((data) => {
-        debugger;
-        if( data.inviteFrom != "" ) {
-          console.log("I have got Invite");
-        } else {
-          console.log("Your invitation got accepted");
+
+        if( data[0].inviteStatus.toLowerCase() == "not accepted" && data.length > 1
+                  && !this.haveYouGotInvitation)  {
+          this.haveYouGotInvitation = true;
+          this._snackBar.open("You have got Invitation!", "", {
+            duration: 10000,
+            horizontalPosition: "right",
+            verticalPosition: "top",
+            panelClass: ["customSnackBar"]
+          });
+
         }
+        /* Idea state For both the user to wait for the invitation and acceptance*/
+        else if( data[0].inviteStatus.toLowerCase() == "not accepted" ) {
+          console.log("waiting for the invite!!!");
+        }
+        /* user who sent invitation Navigates to gamePlay route */
+        else if( data[0].inviteStatus.toLowerCase() == "accepted" ) {
+          this.gamePlay();
+        }
+
       }, ( error ) => {
+        this._snackBar.open("Something Went Wrong!!! ", "", {
+          duration: 10000,
+          horizontalPosition: "right",
+          verticalPosition: "top",
+          panelClass: ["customSnackBar"]
+        });
         console.log(error);
       })
 
     }
     ngOnInit() {
+      this.userDetails.invitationSubject.subscribe( ( value ) => {
+        this.invitationFromUserName = value.invitaionSentFrom ;
+        console.log("Updated after the invitation");
+      } )
+
     }
 
     getWaitingUser() {
@@ -63,15 +100,44 @@
           })
         };
       const userNickName = this.userDetails.userName;
-      let params = new HttpParams().set('from', inviteUser.value).set('to', userNickName);
+      let params = new HttpParams().set('from', userNickName).set('to',  inviteUser.value);
 
       return this.http.get<any>( this.SEND_INVITE, {headers: httpOptions.headers, params: params})
         .subscribe(( results ) => {
-          if( results.registered ){
+          if( results[0].inviteFor !== "" &&  results[1].from !== "" ){
             console.log("Working httpGet Invite");
-            this.router.navigate(['gamePlay']);
+            /*this.router.navigate(['gamePlay']);*/
+            this.userDetails.invitationSubject.next({invitaionSentFrom: this.userDetails.userName});
+            this.userDetails.invitedUserName = this.userDetails.userName;
+            this.isInvitationSentByThisUser = true;
+            this._snackBar.open("Invitation has been sent", "", {
+              duration: 10000,
+              horizontalPosition: "right",
+              verticalPosition: "top",
+              panelClass: ["customSnackBar"]
+
+            });
+
           }
           // this.result = results;
+        }, (error) => {
+          console.log(" Error Working httpGet Invite user ", error);
+        });
+
+    }
+
+    onAccept() {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+      const userNickName = this.userDetails.userName;
+      let params = new HttpParams().set('user', userNickName);
+
+      return this.http.get<any>( this.ACCEPT_INVITATION, {headers: httpOptions.headers, params: params})
+        .subscribe(( results ) => {
+          this.gamePlay();
         }, (error) => {
           console.log(" Error Working httpGet Invite user ", error);
         });

@@ -201,6 +201,7 @@ public class MicroServer {
 		 */
         Invitation invite = new Invitation(user,fromUser);
         invites.add(invite);
+        System.out.println("sent invite to " + user + " from "  + fromUser);
 		return "[{\"inviteFor\":\"" + user + "\"}, {\"from\": \"" + fromUser + "\"}]";
 
 	}
@@ -213,14 +214,20 @@ public class MicroServer {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         for(Invitation in:invites){
+            if((in.to.equals(User) || in.from.equals(User)) && in.accepted == true){
+                System.out.println(User +"[{\"inviteStatus\":\"accepted\"}]");
+                return "[{\"inviteStatus\":\"accepted\"}]";
+            }
             if(in.to.equals(User)){
-                return "[{\"inviteFrom\":\"" + in.from + "\"}]";
+                System.out.println(User + "[{\"inviteStatus\":\"not accepted\"},{\"inviteFrom\":\"" + in.from + "\"}]");
+                return "[{\"inviteStatus\":\"not accepted\"},{\"inviteFrom\":\"" + in.from + "\"}]";
             }
-            else if(in.from.equals(User) && in.accepted == true){
-                invites.remove(in);
-                return gson.toJson(gameManager.getGame(in.to,in.from), BanqiPiece[][].class);
-            }
+            //else if(in.from.equals(User) && in.accepted == true){
+                //invites.remove(in);
+              //  return gson.toJson(gameManager.getGame(in.to,in.from), BanqiPiece[][].class);
+            //}
         }
+        System.out.println(User +"[{\"inviteStatus\":\"not accepted\"}]");
         return "[{\"inviteStatus\":\"not accepted\"}]";
 
     }
@@ -240,7 +247,8 @@ public class MicroServer {
                 user1.setNickName(i.to);
                 UserBean user2 = new UserBean();
                 user2.setNickName(i.from);
-                return gson.toJson(gameManager.addGame(user1,user2), BanqiPiece[][].class);
+                /*return gson.toJson(gameManager.addGame(user1,user2), BanqiPiece[][].class);*/
+                return "[{\"inviteStatus\":\"accepted\"}]";
             }
         }
 
