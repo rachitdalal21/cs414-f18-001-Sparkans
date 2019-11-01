@@ -97,6 +97,8 @@ public class BanqiBoard {
 				}
 
 				board[randr][randc] = pieces[i];
+				pieces[i].row = randr;
+				pieces[i].column = randc;
 			}
 
 		}

@@ -10,13 +10,14 @@ import com.sparkans.banqi.util.ContextPropertyLoader;
 
 public class MySqlCon {
 
-	public static Connection connection;
+	//public static Connection connection;
 
 	public static Connection getConnection()  {
 
-		if (connection != null) {
-			return connection;
-		}
+	//	if (connection != null) {
+	//		return connection;
+	//	}
+		Connection connection = null;
 		ContextPropertyLoader propertyLoader = new ContextPropertyLoader();
 		try {
 			Properties props = propertyLoader.getPropValues();
