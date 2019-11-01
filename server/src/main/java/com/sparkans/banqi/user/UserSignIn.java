@@ -9,13 +9,13 @@ import com.sparkans.banqi.db.*;
 public class UserSignIn {
 
 	private UserBean userBean;
-	private Connection conn = null;
+	//private Connection conn = null;
 	private PreparedStatement statement = null;
 	private ResultSet resultSet = null;
 
 	public UserSignIn() {
 		this.userBean = new UserBean();
-		conn = MySqlCon.getConnection();
+		//conn = MySqlCon.getConnection();
 	}
 
 	//validating if nickname present in Database 
@@ -31,6 +31,7 @@ public class UserSignIn {
 
 		try
 		{
+			Connection conn = MySqlCon.getConnection();
 			statement = conn.prepareStatement("SELECT nickname, password, isActive_flag  FROM sparkans.Banqi_Users WHERE nickname =?");
 			statement.setString(1, userBean.getNickname());
 			resultSet = statement.executeQuery();
@@ -47,6 +48,9 @@ public class UserSignIn {
 					update.executeUpdate();
 
 					System.out.println("Credentials verified. You are Logged In!!");
+					if (conn != null) {
+						conn.close();
+					}
 					return true;
 				} 
 				else if (!resultSet.getString("isActive_flag").equals("Y"))
@@ -68,7 +72,7 @@ public class UserSignIn {
 			}
 
 		}catch (SQLException e) {
-			System.out.println("Something went wrong in User SignIn!!");
+			System.out.println("Something went wrong in User SignIn!!" + e.getMessage());
 		}
 		finally {
 			if (resultSet != null) {
@@ -76,9 +80,6 @@ public class UserSignIn {
 			}
 			if (statement != null) {
 				statement.close();
-			}
-			if (conn != null) {
-				conn.close();
 			}
 		}
 		return false;

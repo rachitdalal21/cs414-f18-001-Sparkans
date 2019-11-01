@@ -1,10 +1,15 @@
 package com.sparkans.banqi.game;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public class Soldier extends BanqiPiece {
 
 	ArrayList<String> legalMoves;
+
+	@Expose
+	private static final String name = "Soldier";
 
 	public Soldier(BanqiBoard board, Color color) {
 		super(board, color);

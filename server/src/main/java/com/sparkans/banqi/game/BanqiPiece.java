@@ -11,14 +11,20 @@ public abstract class BanqiPiece {
 	public enum Color { RED, WHITE };
 
 	protected BanqiBoard board;
+
+	@Expose
 	protected int row;
+	@Expose
 	protected int column;
 	@Expose
 	protected Color color;
+	@Expose
+	protected boolean isFaceDown;
 
 	public BanqiPiece(BanqiBoard board, Color color) {
 		this.board = board;
 		this.color = color;
+		this.isFaceDown = true;
 	}
 
 	public Color getColor() {

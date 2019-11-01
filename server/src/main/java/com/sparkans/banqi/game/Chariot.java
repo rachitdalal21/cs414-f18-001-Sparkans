@@ -1,10 +1,15 @@
 package com.sparkans.banqi.game;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public class Chariot extends BanqiPiece {
 
 	ArrayList<String> legalMoves;
+
+	@Expose
+	private static final String name = "Chariot";
 
 	public Chariot(BanqiBoard board, Color color) {
 		super(board, color);
