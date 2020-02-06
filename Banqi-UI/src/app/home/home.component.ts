@@ -13,6 +13,12 @@ export class HomeComponent implements OnInit {
 
    // this.blurImg([[1,2,3,1], [4,5, 4,1], [1,4,6,1] ]);
     this.findAllPossibleIP("25525511135")
+    //this.wordBreak("catsandog", [ "cats", "dog", "sand", "and", "cat" ]);
+    this.intersection([4,9,5], [9,4,9,8,4]);
+    /*this.intersection([1,2,2,1], [2,2]);
+    this.intersection([1], [1]);
+    this.intersection([1,2], [2,1]);
+    this.intersection([1,2], [1,1]);*/
   }
   blurImg( img ) {
     var newImg = [];
@@ -106,5 +112,85 @@ export class HomeComponent implements OnInit {
       return val >= 0 && val <= 255;
   }
  // console.log("Test 1",blurImg[[5,7], [6,8]] );
+
+   wordBreak(s, wordDict) {
+    if(s && s.length > 0 && wordDict.length > 0 )
+    {
+      var visitedIndex = [];
+      for( var i = 0; i< wordDict.length; i++ ) {
+        var startIndex = s.indexOf(wordDict[i]);
+        if( startIndex  >= 0  && visitedIndex.indexOf(startIndex) === -1 )
+        {
+          var lastIndex = startIndex + ( wordDict[i].length );
+          while( startIndex !== lastIndex )  {
+            visitedIndex.push(startIndex);
+            startIndex = startIndex + 1 ;
+          }
+        } else {
+          return false;
+        }
+      }
+      return true;
+
+    }
+    return false;
+  };
+
+  wordBreakSecond(s, wordDict) {
+    if(s && s.length > 0 && wordDict.length > 0 ) {
+
+      for( let i = 0; i < s.length ; i++ ) {
+        for( let j = 0; j <= i +1 ; j++ ) {
+
+        }
+      }
+    }
+  };
+
+  intersection (nums1, nums2) {
+    let commonEle = [],
+      lastVisitedIndex = 0;
+
+    if( nums1.length > 0 && nums2.length > 0  )
+    {
+      let arr = nums1.length === nums2.length  ? nums1 : [];
+
+      let secArr = nums1.length === nums2.length ? nums2 : [];
+
+      if(nums1.length > nums2.length ) {
+        arr = nums1.sort();
+      } else {
+        secArr = nums1.sort();
+      }
+      if(nums1.length < nums2.length ) {
+        arr = nums2.sort();
+      } else {
+        secArr = nums2.sort();
+      }
+
+      for( var i = 0; i < secArr.length ; i++ ) {
+        /*var comIndex = arr.indexOf( secArr[i], ( lastVisitedIndex === 0 ? lastVisitedIndex : lastVisitedIndex + 1 ) );
+
+        if( comIndex > -1 && ( comIndex >= lastVisitedIndex ) )
+        {
+          lastVisitedIndex = lastVisitedIndex == 0 && comIndex === 0 && secArr.length !== 2 && arr.length !== 2  ?  comIndex + 1 : comIndex ;
+          commonEle.push(secArr[i]);
+        }*/
+        var comIndex = arr.indexOf( secArr[i]);
+
+        if( comIndex > -1 )
+        {
+          arr.splice(comIndex, 1);
+          lastVisitedIndex = i;
+          commonEle.push(secArr[i]);
+        }
+      }
+      return commonEle;
+    } else {
+      return commonEle;
+    }
+
+
+  };
 
 }
