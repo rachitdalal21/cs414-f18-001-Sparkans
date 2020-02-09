@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
     this.intersection([1], [1]);
     this.intersection([1,2], [2,1]);
     this.intersection([1,2], [1,1]);*/
+    this.threeSumClosest([1,1,0,1], -100);
   }
   blurImg( img ) {
     var newImg = [];
@@ -169,13 +170,7 @@ export class HomeComponent implements OnInit {
       }
 
       for( var i = 0; i < secArr.length ; i++ ) {
-        /*var comIndex = arr.indexOf( secArr[i], ( lastVisitedIndex === 0 ? lastVisitedIndex : lastVisitedIndex + 1 ) );
 
-        if( comIndex > -1 && ( comIndex >= lastVisitedIndex ) )
-        {
-          lastVisitedIndex = lastVisitedIndex == 0 && comIndex === 0 && secArr.length !== 2 && arr.length !== 2  ?  comIndex + 1 : comIndex ;
-          commonEle.push(secArr[i]);
-        }*/
         var comIndex = arr.indexOf( secArr[i]);
 
         if( comIndex > -1 )
@@ -191,6 +186,44 @@ export class HomeComponent implements OnInit {
     }
 
 
+  };
+
+  threeSumClosest = function(nums, target) {
+
+    if( nums.length > 0 )
+    {
+      let sortedArray = nums.sort((a, b) => {
+          return a-b;
+        }),
+        result;
+      let max_value = Number.MAX_VALUE;
+
+      for( let  i = 0 ; i < nums.length ; i++ ) {
+        let j = i + 1,
+          k = nums.length - 1;
+
+        while ( j < k )
+        {
+          result = nums[i] + nums[j] + nums[k];
+          let diff = Math.abs(target - result);
+          if( diff === 0 )
+          {
+            return result;
+          }
+          if( diff < Math.abs( target - max_value ) ) {
+            max_value = result;
+          }
+          if( result < target ) {
+            j++;
+          } else {
+            k--;
+          }
+        }
+
+      }
+      return max_value;
+
+    }
   };
 
 }
